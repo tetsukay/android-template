@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'deploygate'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "app.tetsukay.androidtemplates"
+        minSdkVersion 22
+        targetSdkVersion 29
+        versionCode 1_000_00_0 // major.minor.hotfix.rc
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.firebase:firebase-core:17.4.3'
+
+    implementation deps.kotlin.stdlib
+    implementation deps.android.appcompat
+    implementation deps.android.core_ktx
+    implementation deps.android.constraint_layout
+    implementation deps.navigation.ui
+    implementation deps.navigation.ui_ktx
+    implementation deps.navigation.fragment
+    implementation deps.navigation.fragment_ktx
+    implementation deps.android.recyclerview
+    implementation deps.android.cardview
+    implementation deps.android.material
+    implementation deps.lifecycle.livedata_ktx
+
+    implementation deps.dagger.core
+    implementation deps.dagger.android
+    kapt deps.dagger.kapt
+
+
+    testImplementation deps.junit4.core
+    androidTestImplementation deps.atsl.core
+    androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.atsl.ext_junit
+    androidTestImplementation deps.espresso.core
+
+    // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream
+    implementation group: 'org.twitter4j', name: 'twitter4j-stream', version: '4.0.7'
+    implementation('com.twitter.sdk.android:twitter:3.2.0@aar') {
+        transitive = true
+    }
+    implementation 'se.ansman.kotshi:api:1.0.6'
+    kapt 'se.ansman.kotshi:compiler:1.0.6'
+
+    implementation deps.networking.retrofit.runtime
+    implementation deps.networking.retrofit.mock
+    implementation deps.networking.retrofit.converter_moshi
+    implementation deps.networking.mock_web_server
+    implementation deps.networking.moshi
+    implementation deps.networking.moshi_kotlin
+    kapt deps.networking.moshi_codegen
+    implementation deps.coroutines.android
+}
